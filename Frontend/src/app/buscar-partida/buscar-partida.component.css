@@ -1,0 +1,18 @@
+.matchBox{
+
+}
+
+.matchBox:hover{
+  cursor: pointer;
+  background-color: #ebf6f4;
+  transition-duration: 200ms;
+}
+
+.matchBox:hover * .hide{
+  transition-duration: 200ms;
+}
+
+
+.hide{
+  display: none;
+}

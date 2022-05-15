@@ -1,0 +1,27 @@
+.myBox{
+    overflow: auto;
+    padding: 2%;
+    height: 90%;
+    width: auto;
+    overflow-x: hidden;
+    min-width: 93%;
+  }
+  ul.list-group:after {
+    clear: both;
+    display: block;
+    content: "";
+  }
+  
+  .list-group-item {
+      float: left;
+      margin-left: 0px;
+      padding: 25px 0px;
+  }
+  
+  .btn{
+      width: 100%;
+  }
+
+  .text-start{
+      margin-bottom: 2vmin;
+  }

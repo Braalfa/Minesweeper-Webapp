@@ -1,0 +1,113 @@
+<div class="container">
+
+  <br>
+  <h1 class='text-center'>Buscaminas</h1>
+  <br><br>
+
+  <h6 class="text-center" *ngIf = "!seleccionDeTipoPartida">
+    Seleccione si desea crear una nueva partida o continuar su última partida</h6>
+  <br>
+
+  <h6 class="text-center" *ngIf = "seleccionDeTipoPartida && nuevaPartida">
+    Introduzca las configuraciones de la nueva partida</h6>
+  <br>
+
+  <h6 class="text-center" *ngIf = "seleccionDeTipoPartida && !nuevaPartida">
+    Introduzca su correo electronico</h6>
+  <br>
+
+
+  <div class="row justify-content-center" style="width: 40%; margin: auto;">
+        <form class="row g-3 needs-validation" novalidate>
+            <div class="mb-3 row" *ngIf = "seleccionDeTipoPartida && nuevaPartida">
+              <div class="col-sm-5">
+                <label for="altura" class="col-form-label">Tamaño del tablero:</label>
+              </div>
+              <div class="col-sm-7">
+                <div class="input-group">
+                  <input type="number" step="1" [(ngModel)]="partida.altura"
+                         [ngModelOptions]="{standalone: true}" min="5" max="20" class="form-control"
+                         id="altura" required>
+                  <span class="input-group-text">Altura</span>
+                  <div class="invalid-feedback">
+                    Por favor proporcione un numero entero entre 5 y 20
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="mb-3 row" *ngIf = "seleccionDeTipoPartida && nuevaPartida">
+              <div class="col-sm-5">
+              </div>
+              <div class="col-sm-7">
+                <div class="input-group">
+                  <input type="number" step="1" [(ngModel)]="partida.ancho"
+                         [ngModelOptions]="{standalone: true}" min="5" max="20" class="form-control"
+                         id="ancho" required>
+                  <span class="input-group-text">Ancho</span>
+                  <div class="invalid-feedback">
+                    Por favor proporcione un numero entero entre 5 y 20
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="mb-3 row" *ngIf = "seleccionDeTipoPartida && nuevaPartida">
+              <div class="col-sm-5">
+                <label for="dificultad" class="col-form-label">Dificultad:</label>
+              </div>
+              <div class="col-sm-7">
+                <select class="form-select" id="dificultad" [(ngModel)]="partida.dificultad"
+                        [ngModelOptions]="{standalone: true}" required>
+                  <option *ngFor="let dificultad of dificultades" [value]="dificultad">
+                    {{dificultad}}
+                  </option>
+                </select>
+                <div class="invalid-feedback">
+                  Por favor seleccione una dificultad.
+                </div>
+              </div>
+            </div>
+
+            <div class="mb-3 row" *ngIf = "seleccionDeTipoPartida">
+              <div class="col-sm-5">
+                <label for="correo" class="col-form-label">Correo electrónico</label>
+              </div>
+              <div class="col-sm-7">
+                <input type="text" [(ngModel)]="partida.correo" [ngModelOptions]="{standalone: true}"
+                       class="form-control" id="correo" required>
+                <div class="invalid-feedback">
+                  Por favor proporcione un correo electronico
+                </div>
+              </div>
+            </div>
+        </form>
+    </div>
+
+  <div class="row justify-content-center" style="width: 40%; margin: auto;" *ngIf = "!seleccionDeTipoPartida">
+      <div class="col-sm-6">
+        <button class="btn btn-secondary" (click)="seleccionarNuevaPartida()" type="submit">Nueva partida</button>
+      </div>
+      <div class="col-sm-6">
+        <button class="btn btn-secondary" (click)="seleccionContinuarPartida()" type="submit">Continuar partida</button>
+      </div>
+    </div>
+
+  <div class="row justify-content-center" style="margin-top: 5vh; margin-bottom: 10vh" *ngIf = "seleccionDeTipoPartida">
+        <div class="col-sm-5">
+        </div>
+        <div class="col-sm-2">
+          <button class="btn btn-primary" (click)="continuar()" type="submit">Continuar</button>
+        </div>
+        <div class="col-sm-5">
+        </div>
+    </div>
+
+    <app-error-modal [mensajeError]="mensajeError"></app-error-modal>
+
+    <app-return-modal [ruta]="rutaSalir"></app-return-modal>
+
+</div>
+
+
+<div class="container">
+    <router-outlet aria-current="page"></router-outlet>
+</div>

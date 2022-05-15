@@ -1,0 +1,14 @@
+.battleship-grid {
+    margin: 2vmin;
+    max-width: 600px;
+    max-height: 400px;
+    display: grid;
+    /*background-color: hsl(27, 100%, 46%);*/
+    align-items: center;
+  }
+
+  countdown{
+    font-size:xx-large;
+    font-weight: bold;
+
+  }

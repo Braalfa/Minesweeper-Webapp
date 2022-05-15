@@ -1,0 +1,44 @@
+<script src="scripts/DragDropTouch.js"></script>
+<div class="container-fluid">
+
+    <br>
+    <h1 class='text-center'>Buscaminas</h1>
+    <br><br>
+
+    <div class="row justify-content-evenly">
+        <!------------------------ Mi tablero --------------------------->
+        <div class="col-6 col-md-6">
+            <div class="battleship-grid grid-player1" style="margin: auto"
+                     [style]="{'width': this.gridWidth+'px',
+                                 'height': this.gridHeight+'px',
+                                 'grid-template-rows':'repeat(' + this.height + ', auto)',
+                                 'grid-template-columns': 'repeat(' + this.width + ', auto)'}">
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="successModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="staticBackdropLabel">{{headerTerminarPartida}}</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p class="fs-5 text-center">{{mensajeExitoTerminar}}</p>
+                <p class="fs-5 text-center">{{mensajeGanadas}}</p>
+                <p class="fs-5 text-center">{{mensajePerdidas}}</p>
+                <p class="fs-5 text-center">{{mensajeEstadisticas}}</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" [routerLink]="[rutaSalir]" data-bs-dismiss="modal">Listo</button>
+            </div>
+        </div>
+        </div>
+    </div>
+
+    <app-error-modal [mensajeError]="mensajeError"></app-error-modal>
+
+    <app-return-modal [ruta]="rutaSalir"></app-return-modal>
+</div>
+

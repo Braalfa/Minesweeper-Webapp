@@ -1,0 +1,114 @@
+<script src="colocar-naves.component.ts" charset="utf-8"></script>
+<script src="scripts/DragDropTouch.js"></script>
+<div class="container-fluid">
+
+    <br>
+    <h1 class='text-center'>Colocar naves</h1>
+
+    <div class="row justify-content-evenly">
+        <div class="col-6">
+            <h3 class='text-center' style="padding-left: 8vmin;">Tablero</h3><br>
+        </div>
+        <div class="col-1"></div>
+        <div class="col-4">
+            <h3 class='text-center'>Naves disponibles</h3>
+        </div>
+        <div class="col-1"></div>
+    </div>
+
+    <div class="row justify-content-evenly">
+
+        <!------------------------ Tablero --------------------------->
+
+        <div class="col-6 col-md-6">
+
+            <div class="container ">
+                <div class="battleship-grid grid-user" style="margin: auto"
+                     [style]="{'width': this.gridWidth+'px',
+                                 'height': this.gripHeight+'px',
+                                 'grid-template-rows':'repeat(' + this.height + ', auto)',
+                                 'grid-template-columns': 'repeat(' + this.width + ', auto)'}">
+                    <!---
+                    <div *ngFor="let dummy of ' '.repeat(n_rows).split(''); index as i">
+                        <div *ngFor="let dummy of ' '.repeat(m_col).split(''); index as j">
+                            [{{i+1}}][{{j+1}}]
+                        </div>
+                    </div>-->
+                </div>
+            </div>
+
+        </div>
+
+        <!----------------------------------------------------------------->
+
+        <div class="col-1 col-md-1"></div>
+
+        <!-------------------------- Naves ----------------------------->
+
+        <div class="col-4 col-md-4"> <br>
+
+            <div [ngStyle]="{'display': putHelp}" class="alert alert-info alert-dismissible fade show" role="alert">
+                <i class="bi bi-info-circle"></i>
+                 Las naves se colocan arrastrandolas.
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            <div [ngStyle]="{'display': removeHelp}" class="alert alert-info alert-dismissible fade show" role="alert">
+                <i class="bi bi-info-circle"></i>
+                 Las naves se eliminan con el boton de devolver.
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            <div class="container overflow-auto" id="display-grid">
+
+                <div *ngFor="let ship of shipArray; let i = index">
+                    <div *ngIf="ship.disponible" class="ship" draggable="true" (dragstart)="dragStart($event)" style="padding: 0"
+                        id="{{ship.identificador}}"
+                        [style]="{'width': ship.largo!*this.squareSize+'px', 'height': ship.ancho!*this.squareSize+'px', 'background-repeat': 'round'}"
+                        [style.background-image]="'url('+ship.icono+')'">
+                        <!--<img class="ship" draggable="false" src="{{ship.icono}}" style="width: 100%; height: 100%">-->
+                    </div>
+                </div>
+            </div>
+
+            <br><br>
+
+            <div class="row mb-3">
+                <div class="col-3">
+                    <button [disabled]="!this.seleccionadaParaEliminar" (click)="eliminarNave()" type="button" class="btn btn-danger"><i class="bi bi-arrow-return-right"></i></button>
+                </div>
+                <div class="col-5">
+                    <button [disabled]="!this.allShipsPlaced" (click)="continuar()" type="button" class="btn btn-primary">{{mensajeBotonCrear}}</button>
+                </div>
+                <div class="col-4">
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#volverModal">Volver</button>
+                </div>
+
+
+            </div>
+
+        </div>
+        
+        <div class="col-1 col-md-1"></div>
+
+
+        <!-- Modal crear partida-->
+        <div class="modal fade" id="crearModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Partida creada con éxito</h5>
+               <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
+                </div>
+                <div class="modal-body">
+                    <p class="fs-5 fw-bold text-center">Esperando rival</p>
+                </div>
+            </div>
+            </div>
+        </div>
+
+        <app-error-modal [mensajeError]="mensajeError"></app-error-modal>
+
+        <app-return-modal [ruta]="rutaSalir"></app-return-modal>
+
+    </div>
+
+</div>
