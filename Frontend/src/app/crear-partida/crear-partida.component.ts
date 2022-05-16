@@ -1,10 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Evento } from '../models/Evento';
 import {EventoHttpService} from "../http-services/evento-http.service";
-import {CrearPartidaDataService} from "../services/crear-partida-data.service";
-import { NumeroJugador } from '../colocar-naves/numeroJugador';
 import {PartidaBuscaminas} from "../models/PartidaBuscaminas";
+import {JugarPartidaDataService} from "../services/jugar-partida-data.service";
 declare var $: any;
 
 @Component({
@@ -24,7 +22,7 @@ export class CrearPartidaComponent implements OnInit {
   mensajeError: string = ""
   constructor(public router: Router,
               public crearPartidaService: EventoHttpService,
-              public crearPartidaDataService: CrearPartidaDataService) { }
+              public jugarPartidaDataService: JugarPartidaDataService) { }
 
   ngOnInit(): void {
   }
@@ -39,6 +37,10 @@ export class CrearPartidaComponent implements OnInit {
     this.nuevaPartida = false
   }
 
+  reset(){
+    this.seleccionDeTipoPartida = false
+  }
+
   continuar () {
     'use strict'
     var forms = document.querySelectorAll('.needs-validation');
@@ -46,18 +48,18 @@ export class CrearPartidaComponent implements OnInit {
     if (!form.checkValidity()) {
       form.classList.add('was-validated')
     }else{
-      if(true){
+      if(false){
         this.mensajeError = "F";
         $('#errorModal').modal('show');
       }
+      this.jugarPartidaDataService.cambiarIdentificador(this.partida.identificador!)
+      this.jugarPartidaDataService.cambiarCorreo(this.partida.correo!)
+      this.jugarPartidaDataService.cambiarAncho(this.partida.ancho!)
+      this.jugarPartidaDataService.cambiarAltura(this.partida.altura!)
+      this.jugarPartidaDataService.cambiarDificultad(this.partida.dificultad!)
+
       this.router.navigate(['/jugar-partida']);
     }
-  }
-
-
-
-  irAColocarNaves(){
-
   }
 
 }

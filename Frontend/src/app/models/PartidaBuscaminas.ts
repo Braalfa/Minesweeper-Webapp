@@ -1,5 +1,5 @@
 export class PartidaBuscaminas{
-  public identificador: number|undefined
+  public identificador: string|undefined
   public altura: number|undefined
   public ancho: number|undefined
   public dificultad: string|undefined

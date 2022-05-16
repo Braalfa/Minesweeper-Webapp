@@ -4,7 +4,6 @@ import {Observable} from "rxjs";
 import {NaveCompuesta} from "../models/NaveCompuesta";
 import {Partida} from "../models/Partida";
 import {PartidaNave} from "../models/PartidaNave";
-import { StringIdGenerator } from '../clases/StringIdGenerator';
 
 @Injectable({
   providedIn: 'root'

@@ -92,12 +92,15 @@
     </div>
 
   <div class="row justify-content-center" style="margin-top: 5vh; margin-bottom: 10vh" *ngIf = "seleccionDeTipoPartida">
-        <div class="col-sm-5">
+        <div class="col-sm-3">
         </div>
         <div class="col-sm-2">
           <button class="btn btn-primary" (click)="continuar()" type="submit">Continuar</button>
         </div>
-        <div class="col-sm-5">
+        <div class="col-sm-2">
+          <button type="button" class="btn btn-danger" (click)="reset()" data-bs-dismiss="modal">Salir</button>
+        </div>
+        <div class="col-sm-3">
         </div>
     </div>
 

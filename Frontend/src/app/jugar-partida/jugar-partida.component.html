@@ -26,12 +26,9 @@
             </div>
             <div class="modal-body">
                 <p class="fs-5 text-center">{{mensajeExitoTerminar}}</p>
-                <p class="fs-5 text-center">{{mensajeGanadas}}</p>
-                <p class="fs-5 text-center">{{mensajePerdidas}}</p>
-                <p class="fs-5 text-center">{{mensajeEstadisticas}}</p>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" [routerLink]="[rutaSalir]" data-bs-dismiss="modal">Listo</button>
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Listo</button>
             </div>
         </div>
         </div>
@@ -40,5 +37,10 @@
     <app-error-modal [mensajeError]="mensajeError"></app-error-modal>
 
     <app-return-modal [ruta]="rutaSalir"></app-return-modal>
+
+  <div class="row justify-content-center" style="width: 5%; margin: auto; margin-top: 3vh">
+    <button type="button" class="btn btn-danger" [routerLink]="[rutaSalir]" data-bs-dismiss="modal">Salir</button>
+  </div>
+
 </div>
 
