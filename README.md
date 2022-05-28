@@ -5,6 +5,7 @@ Aplicacion de buscaminas con frontend y backend
 # Detalles tecnicos
 
 Frontend desarrollado con angular
+
 Backend desarrollado con .net v5
 
 # Configuracion
