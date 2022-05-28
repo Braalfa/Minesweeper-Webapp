@@ -1,6 +1,6 @@
 # Desafio-Redes
 
-Aplicacion de buscaminas con fronend y backend
+Aplicacion de buscaminas con frontend y backend
 
 # Detalles tecnicos
 
