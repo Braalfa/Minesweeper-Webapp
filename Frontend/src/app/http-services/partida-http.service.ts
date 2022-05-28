@@ -8,7 +8,7 @@ import { PartidaBuscaminas } from '../models/PartidaBuscaminas';
 })
 export class PartidaHttpService {
 
-  URL = 'https://redesbackend.azurewebsites.net/api/Partida/'
+  URL = 'https://backendredes.azurewebsites.net/api/Partida/'
 
   constructor(public http: HttpClient) { }
 

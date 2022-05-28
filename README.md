@@ -16,4 +16,5 @@ Para correr se debe cambiar el url del backend en Frontend\src\app\http-services
 ###
 
 Frontend: https://jolly-stone-0e3141010.1.azurestaticapps.net
-Api: https://redesbackend.azurewebsites.net
+
+Api: https://backendredes.azurewebsites.net
