@@ -1,10 +1,11 @@
 export class PartidaBuscaminas{
-  public identificador: string|undefined
+  public id: number|undefined
   public altura: number|undefined
-  public ancho: number|undefined
+  public anchura: number|undefined
   public dificultad: string|undefined
-  public correo: string|undefined
-
+  public email: string|undefined
+  public estado: string|undefined
+  public tableroJugador: number[]|undefined
   constructor() {
   }
 }

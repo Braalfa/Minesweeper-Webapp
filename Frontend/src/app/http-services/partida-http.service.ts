@@ -1,40 +1,47 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Nave } from '../models/Nave';
-import { Partida } from '../models/Partida';
+import { PartidaBuscaminas } from '../models/PartidaBuscaminas';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PartidaHttpService {
 
-  URL = 'https://localhost:5001/api/partida/'
-  URL_partidaNave = 'https://localhost:5001/api/PartidaNave/'
-  URL_nave = 'https://localhost:5001/api/Nave/'
+  URL = 'https://localhost:44340/api/Partida/'
+
   constructor(public http: HttpClient) { }
 
-  public getPartidas(codigoEvento: string):Observable<Partida[]>{
-    return this.http.get<Partida[]>(this.URL+"buscar", {params:{codigoEvento}});
+  public crearPartida(partidaBuscaminas: PartidaBuscaminas):Observable<PartidaBuscaminas>{
+    return this.http.post<PartidaBuscaminas>(this.URL+"crear",{},{params:{altura:partidaBuscaminas.altura!, anchura:partidaBuscaminas.anchura!,
+          dificultad:partidaBuscaminas.dificultad!,email:partidaBuscaminas.email!}});
   }
 
-  public getPartida(id: any):Observable<Partida>{
-    return this.http.get<Partida>(this.URL+id);
+  public realizarMovimiento(fila: number, columna: number, id:number):Observable<PartidaBuscaminas>{
+    return this.http.put<PartidaBuscaminas>(this.URL+"realizaMovimiento",{},{params:{fila, columna, id}});
   }
 
-  public cambiarTurnoTiempo(partida: Partida):Observable<Partida>{
-    return this.http.put<Partida>(this.URL+"Tiempo", partida);
+  public cambiarEstadoCasilla(fila: number, columna: number, id:number, estado:number):Observable<PartidaBuscaminas>{
+    return this.http.put<PartidaBuscaminas>(this.URL+"cambiarEstadoCasilla",{},{params:{fila, columna, id, estado}});
   }
 
-  public disparar(partida: Partida, casillaDisparo: number):Observable<Partida>{
-    return this.http.put<Partida>(this.URL+"Disparar", partida, {params:{casillaDisparo}});
+  public getPartida(email: any):Observable<PartidaBuscaminas>{
+    return this.http.get<PartidaBuscaminas>(this.URL+"buscarActiva",{params:{email}});
   }
-
-  public getPartidaNaves(idJugador: string, idPartida: number):Observable<any>{
-    return this.http.get<Observable<any>>(this.URL_partidaNave, {params:{idJugador,idPartida}});
-  }
-
-  public getNaves():Observable<Nave[]>{
-    return this.http.get<Nave[]>(this.URL_nave);
-  }
+  //
+  // public cambiarTurnoTiempo(partida: Partida):Observable<Partida>{
+  //   return this.http.put<Partida>(this.URL+"Tiempo", partida);
+  // }
+  //
+  // public disparar(partida: Partida, casillaDisparo: number):Observable<Partida>{
+  //   return this.http.put<Partida>(this.URL+"Disparar", partida, {params:{casillaDisparo}});
+  // }
+  //
+  // public getPartidaNaves(idJugador: string, idPartida: number):Observable<any>{
+  //   return this.http.get<Observable<any>>(this.URL_partidaNave, {params:{idJugador,idPartida}});
+  // }
+  //
+  // public getNaves():Observable<Nave[]>{
+  //   return this.http.get<Nave[]>(this.URL_nave);
+  // }
 }

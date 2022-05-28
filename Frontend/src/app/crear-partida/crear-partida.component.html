@@ -40,7 +40,7 @@
               </div>
               <div class="col-sm-7">
                 <div class="input-group">
-                  <input type="number" step="1" [(ngModel)]="partida.ancho"
+                  <input type="number" step="1" [(ngModel)]="partida.anchura"
                          [ngModelOptions]="{standalone: true}" min="5" max="20" class="form-control"
                          id="ancho" required>
                   <span class="input-group-text">Ancho</span>
@@ -72,7 +72,7 @@
                 <label for="correo" class="col-form-label">Correo electrónico</label>
               </div>
               <div class="col-sm-7">
-                <input type="text" [(ngModel)]="partida.correo" [ngModelOptions]="{standalone: true}"
+                <input type="text" [(ngModel)]="partida.email" [ngModelOptions]="{standalone: true}"
                        class="form-control" id="correo" required>
                 <div class="invalid-feedback">
                   Por favor proporcione un correo electronico

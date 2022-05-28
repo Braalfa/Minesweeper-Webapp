@@ -1,11 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { CountdownComponent, CountdownEvent } from 'ngx-countdown';
-import { ColocarNavesService } from '../http-services/colocar-naves.service';
-import { EventoHttpService } from '../http-services/evento-http.service';
 import { PartidaHttpService } from '../http-services/partida-http.service';
-import { Evento } from '../models/Evento';
-import { Nave } from '../models/Nave';
-import { Partida } from '../models/Partida';
 import { JugarPartidaDataService } from '../services/jugar-partida-data.service';
 import {PartidaBuscaminas} from "../models/PartidaBuscaminas";
 
@@ -20,16 +15,18 @@ export class JugarPartidaComponent implements OnInit {
 
   partida: PartidaBuscaminas  = {
     altura: undefined,
-    ancho: undefined,
-    correo: undefined,
+    anchura: undefined,
+    email: undefined,
     dificultad: undefined,
-    identificador: undefined
+    id: undefined,
+    estado: undefined,
+    tableroJugador: undefined
   }
 
   rutaSalir: string = ''
   mensajeError: string = ""
   headerTerminarPartida: string = 'Terminó la partida'
-  mensajeExitoTerminar: string = ""
+  mensajeTerminar: string = ""
 
   // Ancho del tablero en pixeles
   gridWidth = 400
@@ -45,52 +42,43 @@ export class JugarPartidaComponent implements OnInit {
 
   currentSelectedCord:any
 
-  mensajeEstadisticas:string = ""
-  mensajeGanadas:string = ""
-  mensajePerdidas:string = ""
-
   @ViewChild('cd', { static: false }) countdown!: CountdownComponent;
 
 
-  constructor(private jugarPartidaDataService: JugarPartidaDataService) {
-    jugarPartidaDataService.correoElectronicoActual.subscribe(correo => this.partida.correo = correo)
-    jugarPartidaDataService.identificadorActual.subscribe(identificador => this.partida.identificador = identificador)
+  constructor(private jugarPartidaDataService: JugarPartidaDataService,
+              private partidaHttpService: PartidaHttpService) {
+    jugarPartidaDataService.correoElectronicoActual.subscribe(correo => this.partida.email = correo)
+    jugarPartidaDataService.identificadorActual.subscribe(identificador => this.partida.id = identificador)
     jugarPartidaDataService.alturaActual.subscribe(altura => this.partida.altura = altura)
-    jugarPartidaDataService.anchoActual.subscribe(ancho => this.partida.ancho = ancho)
+    jugarPartidaDataService.anchoActual.subscribe(ancho => this.partida.anchura = ancho)
     jugarPartidaDataService.dificultadActual.subscribe(dificultad => this.partida.dificultad = dificultad)
+    jugarPartidaDataService.estadoActual.subscribe(estado => this.partida.estado = estado)
+    jugarPartidaDataService.tableroJugadorActual.subscribe(tablero => this.partida.tableroJugador = tablero)
   }
 
 
-  obtainTablero2D(tablero1D:any, columns:any) {
+  obtainTablero2D(tablero1D:any) {
     let tablero2D = [];
-    for(let i=0;i < tablero1D.length;i = i+columns)
-      tablero2D.push(tablero1D.slice(i,i+columns));
+    for(let i=0;i < tablero1D.length;i = i+this.width)
+      tablero2D.push(tablero1D.slice(i,i+this.width));
     return tablero2D;
   }
 
   ngOnInit(): void {
-    this.getPartida()
+    this.startPartida()
   }
 
-  async getPartida() {
-    try {
-
-    } catch (e: any) {
-      this.mensajeError = e.error
-      $('#errorModal').modal('show');
-    } finally {
-    }
-
+  async startPartida() {
     try {
       this.gameGrid! = document.querySelector('.grid-player1')!
       this.height = this.partida.altura!
-      this.width = this.partida.ancho!
+      this.width = this.partida.anchura!
       this.crearTableros()
     } catch (e: any) {
       this.mensajeError = e.error
       $('#errorModal').modal('show');
     } finally {
-      this.addListenerSeleccionCoordenada(this.gameSquares)
+      this.addListenerSeleccionCoordenada()
     }
 
   }
@@ -105,15 +93,13 @@ export class JugarPartidaComponent implements OnInit {
       this.gridHeight = this.height*this.gridWidth/this.width
       this.squareSize = (this.gridWidth)/(this.width)
     }
-    let tablero = []
-    for(let i = 0; i<this.height*this.width; i++){
-      tablero.push(-1)
-    }
-    this.tablero2D = this.obtainTablero2D(tablero, this.width)
-    this.initiateBoardDisplay(this.gameGrid, this.gameSquares)
+    console.log(this.partida.tableroJugador)
+    this.tablero2D = this.obtainTablero2D(this.partida.tableroJugador)
+    this.initiateBoardDisplay()
+    this.updateBoardDisplay()
   }
 
-  initiateBoardDisplay(grid:any, squares:any) {
+  initiateBoardDisplay() {
     for (let i = 0; i < this.tablero2D.length; i++) {
       for (let j = 0; j < this.tablero2D[0].length; j++) {
         const square = document.createElement('div')
@@ -122,16 +108,16 @@ export class JugarPartidaComponent implements OnInit {
         let area = "grid-area:" +  coordY +" / " +  coordX +" / " +  coordY +" / " +  coordX +" ;";
         square.style.cssText = area+'width:'+this.squareSize+'px;height:'+this.squareSize+'px;background-color: hsl(184, 9%, 62%);border: 1px solid hsla(211, 12%, 48%);';
         square.id = coordY.toString() + ',' + coordX.toString()
-        grid.appendChild(square)
-        squares.push(square)
+        this.gameGrid.appendChild(square)
+        this.gameSquares.push(square)
       }
     }
   }
 
-  updateBoardDisplay(grid:any, squares:any) {
+  updateBoardDisplay() {
     for (let i = 0; i < this.tablero2D.length; i++) {
       for (let j = 0; j < this.tablero2D[0].length; j++) {
-        const square = squares[j+this.width*i]
+        const square = this.gameSquares[j+this.width*i]
         let coordY = i+1;
         let coordX = j+1;
         let area = "grid-area:" +  coordY +" / " +  coordX +" / " +  coordY +" / " +  coordX +" ;";
@@ -163,37 +149,64 @@ export class JugarPartidaComponent implements OnInit {
     }
   }
 
-  addListenerSeleccionCoordenada(squares: any){
-    squares.forEach((square:any) => square.addEventListener('click', (e:any) => {
-      console.log(e)
+  addListenerSeleccionCoordenada(){
+    // Seleccion
+    this.gameSquares.forEach((square:any) => square.addEventListener('click', async (e: any) => {
       let id, row, col
       this.currentSelectedCord = e.target
       id = this.currentSelectedCord.id
-      row = parseInt(id.split(',')[0])-1
-      col = parseInt(id.split(',')[1])-1
-      console.log(row)
-      console.log(col)
-      this.tablero2D = [[-1,-2,0,-3,0],[0,0,0,0,0],[0,0,-1,0,1],[1,1,1,0,0],[0,0,0,0,1],[-1,-1,-1,-1,-1]]
-      this.updateBoardDisplay(this.gameGrid, this.gameSquares)
-      this.terminarPartida()
+      row = parseInt(id.split(',')[0]) - 1
+      col = parseInt(id.split(',')[1]) - 1
+      try {
+        if(this.partida.estado!="ganada"&&this.partida.estado!="perdida") {
+          this.partida = await this.partidaHttpService.realizarMovimiento(row, col, this.partida.id!).toPromise()
+          this.handleTableroUpdate()
+        }
+      } catch (e) {
+        this.mostrarMensajeError()
+      }
     }))
-    squares.forEach((square:any) => square.addEventListener('contextmenu', (e:any) => {
+
+    // Seleccion bandera
+    this.gameSquares.forEach((square:any) => square.addEventListener('contextmenu', async (e: any) => {
       e.preventDefault();
-      console.log(e)
       let id, row, col
       this.currentSelectedCord = e.target
       id = this.currentSelectedCord.id
-      row = parseInt(id.split(',')[0])-1
-      col = parseInt(id.split(',')[1])-1
-      console.log(row)
-      console.log(col)
-      this.tablero2D[row][col] = this.tablero2D[row][col]==-1? -2: this.tablero2D[row][col]
-      this.updateBoardDisplay(this.gameGrid, this.gameSquares)
+      row = parseInt(id.split(',')[0]) - 1
+      col = parseInt(id.split(',')[1]) - 1
+      if(this.partida.estado!="ganada"&&this.partida.estado!="perdida") {
+        try {
+          if (this.tablero2D[row][col] == -1) {
+            this.partida = await this.partidaHttpService.cambiarEstadoCasilla(row, col, this.partida.id!, -2).toPromise()
+            this.handleTableroUpdate()
+          }
+        } catch (e) {
+          this.mostrarMensajeError()
+        }
+      }
     }))
   }
 
+  handleTableroUpdate(){
+    this.tablero2D = this.obtainTablero2D(this.partida.tableroJugador)
+    this.updateBoardDisplay()
+    if (this.partida.estado == "ganada" || this.partida.estado == "perdida") {
+      if(this.partida.estado=="ganada"){
+        this.mensajeTerminar = "¡Partida Ganada!"
+      }else if(this.partida.estado=="perdida"){
+        this.mensajeTerminar = "Partida Perdida"
+      }
+      setTimeout(this.terminarPartida, 1000);
+    }
+  }
+
   terminarPartida(){
-    this.mensajeExitoTerminar = "¡Partida Terminada!"
     $('#successModal').modal('show');
+  }
+
+  mostrarMensajeError(){
+    this.mensajeError = "Error de comunicación con el servidor";
+    $('#errorModal').modal('show');
   }
 }

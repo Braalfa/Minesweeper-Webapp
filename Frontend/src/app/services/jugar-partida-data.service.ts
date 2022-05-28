@@ -18,9 +18,14 @@ export class JugarPartidaDataService {
   public correoElectronico = new BehaviorSubject('');
   correoElectronicoActual = this.dificultad.asObservable();
 
-  public identificador = new BehaviorSubject('');
-  identificadorActual = this.identificador.asObservable();
+  public id = new BehaviorSubject(0);
+  identificadorActual = this.id.asObservable();
 
+  public estado = new BehaviorSubject('');
+  estadoActual = this.estado.asObservable();
+
+  public tableroJugador = new BehaviorSubject([0]);
+  tableroJugadorActual = this.tableroJugador.asObservable();
 
   constructor() { }
 
@@ -40,8 +45,16 @@ export class JugarPartidaDataService {
     this.correoElectronico.next(correoElectronico)
   }
 
-  cambiarIdentificador(identificador: string){
-    this.identificador.next(identificador)
+  cambiarIdentificador(identificador: number){
+    this.id.next(identificador)
+  }
+
+  cambiarEstado(estado: string){
+    this.estado.next(estado)
+  }
+
+  cambiarTableroJugador(tableroJugador: number[]){
+    this.tableroJugador.next(tableroJugador)
   }
 
 }
