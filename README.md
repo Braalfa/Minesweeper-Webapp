@@ -8,7 +8,7 @@ Frontend desarrollado con angular
 
 Backend desarrollado con .net v5
 
-### URLs
+### URLS
 
 Frontend: https://jolly-stone-0e3141010.1.azurestaticapps.net
 
