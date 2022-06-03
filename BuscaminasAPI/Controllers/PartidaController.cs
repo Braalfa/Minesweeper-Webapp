@@ -33,7 +33,7 @@ namespace BuscaminasAPI.Controllers
         [HttpGet("buscarActiva")]
         public Partida Get([FromQuery]string email)
         {
-            List<Partida> partidas = collection.Find(p => p.email == email && (p.estado==GameState.iniciada || p.estado==GameState.activa)).ToList();
+            List<Partida> partidas = collection.Find(p => p.email == email).ToList();
             Partida partida;
             if (partidas.Count == 0)
             {
@@ -72,7 +72,7 @@ namespace BuscaminasAPI.Controllers
             if (partida.estado == GameState.iniciada)
             {
                 partida.tableroPartida = logic.generateGameBoard(partida.anchura, partida.altura, partida.minas,
-                    columna + fila * partida.anchura);
+                    columna + fila * columna);
                 partida.estado = GameState.activa;
             }
 
@@ -83,12 +83,12 @@ namespace BuscaminasAPI.Controllers
 
         // cambia el estado de la casilla a flag o limpio
         [HttpPut("cambiarEstadoCasilla")]
-        public void cambiarEstadoCasilla([FromQuery] int fila, [FromQuery] int columna, [FromQuery] int id, int estado)
+        public Partida cambiarEstadoCasilla([FromQuery] int fila, [FromQuery] int columna, [FromQuery] int id, int estado)
         {
             Partida partida = collection.Find(p => p.id == id).ToList()[0];
             partida.tableroJugador[columna + fila*partida.anchura]=estado;
             collection.ReplaceOne(p => p.id == partida.id, partida);
-            return;
+            return partida;
         }
 
     }

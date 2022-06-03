@@ -16,17 +16,13 @@ namespace BuscaminasAPI.Business
             return (int)(squares * 0.1);
         }
 
-        public virtual int generateRandom( int upperValue)
-        {
-            return random.Next(upperValue);
-        }
         public int[] generateGameBoard(int anchura, int altura, int partidaMinas, int move)
         {
             int[] board = new int[altura * anchura];
             int n = 0;
             while (n < partidaMinas)
             {
-                int squareIndex = generateRandom(altura * anchura);
+                int squareIndex = random.Next(anchura * altura);
                 if (board[squareIndex] != SquareState.mina && squareIndex != move)
                 {
                     board[squareIndex] = SquareState.mina;
@@ -69,7 +65,7 @@ namespace BuscaminasAPI.Business
             return partida;
         }
 
-        public Partida checkWin(Partida partida)
+        private Partida checkWin(Partida partida)
         {
             for (int i = 0; i < partida.tableroPartida.Length; i++)
             {
