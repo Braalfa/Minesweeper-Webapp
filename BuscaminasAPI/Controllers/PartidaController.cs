@@ -83,12 +83,12 @@ namespace BuscaminasAPI.Controllers
 
         // cambia el estado de la casilla a flag o limpio
         [HttpPut("cambiarEstadoCasilla")]
-        public void cambiarEstadoCasilla([FromQuery] int fila, [FromQuery] int columna, [FromQuery] int id, int estado)
+        public Partida cambiarEstadoCasilla([FromQuery] int fila, [FromQuery] int columna, [FromQuery] int id, int estado)
         {
             Partida partida = collection.Find(p => p.id == id).ToList()[0];
             partida.tableroJugador[columna + fila*partida.anchura]=estado;
             collection.ReplaceOne(p => p.id == partida.id, partida);
-            return;
+            return partida;
         }
 
     }
