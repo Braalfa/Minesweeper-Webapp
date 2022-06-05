@@ -178,12 +178,12 @@ export class JugarPartidaComponent implements OnInit {
       if(this.partida.estado!="ganada"&&this.partida.estado!="perdida") {
         try {
           if (this.tablero2D[row][col] == -1) {
-            this.tablero2D[row][col] = -2;
-            this.partidaHttpService.cambiarEstadoCasilla(row, col, this.partida.id!, -2)
+            this.partida.tableroJugador![this.width*row+col] = -2;
+            this.partidaHttpService.cambiarEstadoCasilla(row, col, this.partida.id!, -2).subscribe()
             this.handleTableroUpdate()
           }else if (this.tablero2D[row][col] == -2) {
-            this.tablero2D[row][col] = -1;
-            this.partidaHttpService.cambiarEstadoCasilla(row, col, this.partida.id!, -1)
+            this.partida.tableroJugador![this.width*row+col] = -1;
+            this.partidaHttpService.cambiarEstadoCasilla(row, col, this.partida.id!, -1).subscribe()
             this.handleTableroUpdate()
           }
 
