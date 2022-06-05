@@ -33,7 +33,7 @@ namespace BuscaminasAPI.Controllers
         [HttpGet("buscarActiva")]
         public Partida Get([FromQuery]string email)
         {
-            List<Partida> partidas = collection.Find(p => p.email == email && (p.estado==GameState.iniciada || p.estado==GameState.activa)).ToList();
+            List<Partida> partidas = collection.Find(p => p.email == email).ToList();
             Partida partida;
             if (partidas.Count == 0)
             {
@@ -72,7 +72,7 @@ namespace BuscaminasAPI.Controllers
             if (partida.estado == GameState.iniciada)
             {
                 partida.tableroPartida = logic.generateGameBoard(partida.anchura, partida.altura, partida.minas,
-                    columna + fila * partida.anchura);
+                    columna + fila * columna);
                 partida.estado = GameState.activa;
             }
 
