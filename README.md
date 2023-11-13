@@ -1,15 +1,7 @@
-### Desafio-Redes
+## Minesweeper Webapp
 
-Aplicacion de buscaminas con frontend y backend
+### Technical details
 
-### Detalles tecnicos
+Frontend developed with angular
 
-Frontend desarrollado con angular
-
-Backend desarrollado con .net v5
-
-### URLS
-
-Frontend: https://jolly-stone-0e3141010.1.azurestaticapps.net
-
-Api: https://backendredes.azurewebsites.net
+Backend developed with .net v5
